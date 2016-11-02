@@ -23,7 +23,6 @@ namespace SchetsEditor
             menu = new ToolStripMenuItem("File");
             menu.DropDownItems.Add("Nieuw", null, this.nieuw);
             menu.DropDownItems.Add("Exit", null, this.afsluiten);
-            menu.DropDownItems.Add("Opslaan als", null, this.opslaanAls);//maakt opslaan als knop
             menu.DropDownItems.Add("Open", null, this.open);//maakt open knop
             menuStrip.Items.Add(menu);
         }
@@ -48,11 +47,6 @@ namespace SchetsEditor
         }
         private void afsluiten(object sender, EventArgs e)
         {   this.Close();
-        }
-
-        private void opslaanAls(object sender, EventArgs e)//save as event
-        {
-
         }
 
         private void open(object sender, EventArgs e)//open event

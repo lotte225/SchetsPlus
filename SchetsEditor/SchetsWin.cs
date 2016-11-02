@@ -96,7 +96,7 @@ namespace SchetsEditor
             ToolStripMenuItem menu = new ToolStripMenuItem("File");
             menu.MergeAction = MergeAction.MatchOnly;
             menu.DropDownItems.Add("Sluiten", null, this.afsluiten);
-            menu.DropDownItems.Add("Opslaan", null, opslaan);
+            menu.DropDownItems.Add("Opslaan", null, opslaan);//creeërt opslaan button
             menuStrip.Items.Add(menu);
         }
 
@@ -184,7 +184,6 @@ namespace SchetsEditor
         public void ReadFromFile(string FileName)//opent file
         {
             Bitmap loadedBitMap = new Bitmap(FileName);
-            
             schetscontrol.Schets = new Schets();
             schetscontrol.Schets.VeranderAfmeting(loadedBitMap.Size);
             schetscontrol.Schets.BitmapGraphics.DrawImage(loadedBitMap, 0, 0);
