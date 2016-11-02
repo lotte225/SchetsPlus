@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Resources;
 
 namespace SchetsEditor
-{//koekjes
+{
     public class SchetsWin : Form
     {   
         MenuStrip menuStrip;
