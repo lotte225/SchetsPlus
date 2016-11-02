@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Resources;
 
 namespace SchetsEditor
-{
+{//koekjes
     public class SchetsWin : Form
     {   
         MenuStrip menuStrip;
@@ -76,6 +76,7 @@ namespace SchetsEditor
                                        };
             schetscontrol.KeyPress +=  (object o, KeyPressEventArgs kpea) => 
                                        {   huidigeTool.Letter  (schetscontrol, kpea.KeyChar); 
+                                          
                                        };
             this.Controls.Add(schetscontrol);
 
@@ -184,6 +185,7 @@ namespace SchetsEditor
         public void ReadFromFile(string FileName)//opent file
         {
             Bitmap loadedBitMap = new Bitmap(FileName);
+
             schetscontrol.Schets = new Schets();
             schetscontrol.Schets.VeranderAfmeting(loadedBitMap.Size);
             schetscontrol.Schets.BitmapGraphics.DrawImage(loadedBitMap, 0, 0);

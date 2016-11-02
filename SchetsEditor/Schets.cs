@@ -20,7 +20,7 @@ namespace SchetsEditor
             bitmap = new Bitmap(1, 1);
         }
 
-        public Schets(Bitmap bitje)
+        public Schets(Bitmap bitje)//
         {
             bitmap = bitje;
         }
