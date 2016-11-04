@@ -76,7 +76,6 @@ namespace SchetsEditor
         public override void MuisLos(SchetsControl s, Point p)
         {   base.MuisLos(s, p);
             this.Compleet(s.MaakBitmapGraphics(), this.startpunt, p);
-            s.Invalidate();
         }
         public override void Letter(SchetsControl s, char c)
         {
@@ -91,6 +90,7 @@ namespace SchetsEditor
     public class RechthoekTool : TweepuntTool
     {
         public override string ToString() { return "kader"; }
+        public override string
 
         public override void Bezig(Graphics g, Point p1, Point p2)
         {   g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
@@ -100,7 +100,12 @@ namespace SchetsEditor
     public class VolRechthoekTool : RechthoekTool
     {
         public override string ToString() { return "vlak"; }
-
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            base.MuisLos(s, p);
+            s.geefLijst().Add($"Volrechthoek {startpunt.X} {startpunt.Y} {p.X} {p.Y}");//voegt rechthoek toe aan lijst
+            s.Invalidate();
+        }
         public override void Compleet(Graphics g, Point p1, Point p2)
         {   g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
         }
