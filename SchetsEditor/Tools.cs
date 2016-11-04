@@ -25,6 +25,7 @@ namespace SchetsEditor
         }
         public abstract void MuisDrag(SchetsControl s, Point p);
         public abstract void Letter(SchetsControl s, char c);
+        
     }
 
     public class TekstTool : StartpuntTool

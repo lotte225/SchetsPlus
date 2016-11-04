@@ -7,6 +7,7 @@ namespace SchetsEditor
     public class Schets
     {
         private Bitmap bitmap;
+        private List<string[]> objectenLijst;
         public Bitmap Bitmap//zorgt ervoor dat de bitmap bereikt kan worden vanuit andere klassen
         {
             get
@@ -14,13 +15,24 @@ namespace SchetsEditor
                 return bitmap;
             }
         }
+        public List<string[]> Lijst//maak nieuwe lijst
+        {
+            get
+            {
+                return objectenLijst;
+            }
+        }
         
         public Schets()
         {
             bitmap = new Bitmap(1, 1);
+            objectenLijst = new List<string[]>();//iets met objecten
         }
-
-        public Schets(Bitmap bitje)
+        public Schets(List<string[]> lijstje)//?? geen idee hoe dit te beschrijven, iets met de objecten
+        {
+            objectenLijst = lijstje;
+        }
+        public Schets(Bitmap bitje)//
         {
             bitmap = bitje;
         }
