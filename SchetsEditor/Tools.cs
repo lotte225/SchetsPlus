@@ -45,6 +45,7 @@ namespace SchetsEditor
                 gr.MeasureString(tekst, font, this.startpunt, StringFormat.GenericTypographic);
                 gr.DrawString   (tekst, font, kwast, this.startpunt, StringFormat.GenericTypographic);
                 if (c == 32) sz.Width = 20; // zorgt dat de spatie getekend wordt!
+                else s.geefLijst().Add($"tekst {tekst} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B} {startpunt.X} {startpunt.Y}"); 
                 //gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
                 startpunt.X += (int)sz.Width;
                 s.Invalidate();
@@ -91,6 +92,13 @@ namespace SchetsEditor
     {
         public override string ToString() { return "kader"; }
 
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            base.MuisLos(s, p);
+            s.geefLijst().Add($"Kader {startpunt.X} {startpunt.Y} {p.X} {p.Y} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B}");//voegt kader toe aan lijst
+            s.Invalidate();
+        }
+
         public override void Bezig(Graphics g, Point p1, Point p2)
         {   g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
@@ -102,7 +110,7 @@ namespace SchetsEditor
         public override void MuisLos(SchetsControl s, Point p)
         {
             base.MuisLos(s, p);
-            s.geefLijst().Add($"Volrechthoek {startpunt.X} {startpunt.Y} {p.X} {p.Y} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B}");//voegt rechthoek toe aan lijst
+            s.geefLijst().Add($"Volrechthoek {startpunt.X} {startpunt.Y} {p.X} {p.Y} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B}");//voegt volrechthoek toe aan lijst
             s.Invalidate();
         }
         public override void Compleet(Graphics g, Point p1, Point p2)
@@ -113,6 +121,13 @@ namespace SchetsEditor
     public class EllipseTool: TweepuntTool // teken ovaal figuur
     {
         public override string ToString() { return "ovaal"; }
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            base.MuisLos(s, p);
+            s.geefLijst().Add($"Cirkel {startpunt.X} {startpunt.Y} {p.X} {p.Y} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B}");//voegt ovaal toe aan lijst
+            s.Invalidate();
+
+        }
         public override void Bezig(Graphics g, Point p1, Point p2)
         {
             g.DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
@@ -121,6 +136,12 @@ namespace SchetsEditor
     public class FillEllipseTool: EllipseTool // teken gevulde ovaal
     {
         public override string ToString() { return "cirkel"; }
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            base.MuisLos(s, p);
+            s.geefLijst().Add($"Volcirkel {startpunt.X} {startpunt.Y} {p.X} {p.Y} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B}");//voegt volcirkel toe aan lijst
+            s.Invalidate();
+        }
         public override void Bezig(Graphics g, Point p1, Point p2)
         {
             g.FillEllipse(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
@@ -130,6 +151,13 @@ namespace SchetsEditor
     public class LijnTool : TweepuntTool
     {
         public override string ToString() { return "lijn"; }
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            base.MuisLos(s, p);
+            s.geefLijst().Add($"Lijn {startpunt.X} {startpunt.Y} {p.X} {p.Y} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B}");//voegt lijn toe aan lijst
+            s.Invalidate();
+
+        }
 
         public override void Bezig(Graphics g, Point p1, Point p2)
         {   g.DrawLine(MaakPen(this.kwast,3), p1, p2);
@@ -139,6 +167,12 @@ namespace SchetsEditor
     public class PenTool : LijnTool
     {
         public override string ToString() { return "pen"; }
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            base.MuisLos(s, p);
+            s.geefLijst().Add($"pen {startpunt.X} {startpunt.Y} {p.X} {p.Y} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B}");//voegt lijn toe aan lijst
+            s.Invalidate();
+        }
 
         public override void MuisDrag(SchetsControl s, Point p)
         {   this.MuisLos(s, p);

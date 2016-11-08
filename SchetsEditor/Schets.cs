@@ -65,7 +65,29 @@ namespace SchetsEditor
                 }
                 else if (paras[0] == "Kader")
                 {
-                    gr.FillRectangle(new SolidBrush(Color.FromArgb(int.Parse(paras[5]), int.Parse(paras[6]), int.Parse(paras[7]))), TweepuntTool.Punten2Rechthoek(new Point(int.Parse(paras[1]), int.Parse(paras[2])), new Point(int.Parse(paras[3]), int.Parse(paras[4]))));//tekent volrechthoek uit lijst
+                    gr.DrawRectangle(new Pen(Color.FromArgb(int.Parse(paras[5]), int.Parse(paras[6]), int.Parse(paras[7]))), TweepuntTool.Punten2Rechthoek(new Point(int.Parse(paras[1]), int.Parse(paras[2])), new Point(int.Parse(paras[3]), int.Parse(paras[4]))));//tekent volrechthoek uit lijst
+                }
+                else if (paras[0] == "Volcirkel")
+                {
+                    gr.FillEllipse(new SolidBrush(Color.FromArgb(int.Parse(paras[5]), int.Parse(paras[6]), int.Parse(paras[7]))), RechthoekTool.Punten2Rechthoek(new Point(int.Parse(paras[1]), int.Parse(paras[2])), new Point(int.Parse(paras[3]), int.Parse(paras[4]))));//tekent volrechthoek uit lijst
+                }
+                else if (paras[0] == "Cirkel")
+                {
+                    gr.DrawEllipse(new Pen(Color.FromArgb(int.Parse(paras[5]), int.Parse(paras[6]), int.Parse(paras[7]))), TweepuntTool.Punten2Rechthoek(new Point(int.Parse(paras[1]), int.Parse(paras[2])), new Point(int.Parse(paras[3]), int.Parse(paras[4]))));//tekent volrechthoek uit lijst
+                }
+                else if (paras[0] == "Lijn")
+                {
+                    gr.DrawLine(new Pen(Color.FromArgb(int.Parse(paras[5]), int.Parse(paras[6]), int.Parse(paras[7]))), (new Point(int.Parse(paras[1]), int.Parse(paras[2]))), new Point(int.Parse(paras[3]), int.Parse(paras[4])));
+                }
+                else if (paras[0] == "pen")
+                {
+                    gr.DrawLine(new Pen(Color.FromArgb(int.Parse(paras[5]), int.Parse(paras[6]), int.Parse(paras[7]))), (new Point(int.Parse(paras[1]), int.Parse(paras[2]))), new Point(int.Parse(paras[3]), int.Parse(paras[4])));
+                }
+                else if (paras[0] == "tekst")
+                {
+                    gr.DrawString(paras[1], new Font("Tahoma", 40), new SolidBrush(Color.FromArgb(int.Parse(paras[2]),int.Parse(paras[3]), int.Parse(paras[4]))), int.Parse(paras[5]), int.Parse(paras[6]),StringFormat.GenericTypographic);
+                                       // gr.DrawString(tekst, font, kwast, this.startpunt, StringFormat.GenericTypographic);
+
                 }
             }
         }
