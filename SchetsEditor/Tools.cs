@@ -15,7 +15,7 @@ namespace SchetsEditor
     public abstract class StartpuntTool : ISchetsTool
     {
         protected Point startpunt;
-        protected Brush kwast;
+        protected SolidBrush kwast;
 
         public virtual void MuisVast(SchetsControl s, Point p)
         {   startpunt = p;
@@ -67,7 +67,7 @@ namespace SchetsEditor
         }
         public override void MuisVast(SchetsControl s, Point p)
         {   base.MuisVast(s, p);
-            kwast = Brushes.Gray;
+            kwast = new SolidBrush(Color.Gray);
         }
         public override void MuisDrag(SchetsControl s, Point p)
         {   s.Refresh();
@@ -90,7 +90,6 @@ namespace SchetsEditor
     public class RechthoekTool : TweepuntTool
     {
         public override string ToString() { return "kader"; }
-        public override string
 
         public override void Bezig(Graphics g, Point p1, Point p2)
         {   g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
@@ -103,7 +102,7 @@ namespace SchetsEditor
         public override void MuisLos(SchetsControl s, Point p)
         {
             base.MuisLos(s, p);
-            s.geefLijst().Add($"Volrechthoek {startpunt.X} {startpunt.Y} {p.X} {p.Y}");//voegt rechthoek toe aan lijst
+            s.geefLijst().Add($"Volrechthoek {startpunt.X} {startpunt.Y} {p.X} {p.Y} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B}");//voegt rechthoek toe aan lijst
             s.Invalidate();
         }
         public override void Compleet(Graphics g, Point p1, Point p2)

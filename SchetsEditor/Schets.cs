@@ -54,7 +54,20 @@ namespace SchetsEditor
         }
         public void Teken(Graphics gr)
         {
-            gr.DrawImage(bitmap, 0, 0);
+            // gr.DrawImage(bitmap, 0, 0);
+            gr.Clear(Color.White);//witte achtergrond
+            foreach(string s in objectenLijst)
+            {
+                string[] paras = s.Split();
+                if (paras[0] == "Volrechthoek")
+                {
+                    gr.FillRectangle(new SolidBrush (Color.FromArgb(int.Parse(paras[5]), int.Parse(paras[6]), int.Parse(paras[7]))), TweepuntTool.Punten2Rechthoek (new Point(int.Parse(paras[1]), int.Parse(paras[2])), new Point(int.Parse(paras[3]), int.Parse (paras[4]) )));//tekent volrechthoek uit lijst
+                }
+                else if (paras[0] == "Kader")
+                {
+                    gr.FillRectangle(new SolidBrush(Color.FromArgb(int.Parse(paras[5]), int.Parse(paras[6]), int.Parse(paras[7]))), TweepuntTool.Punten2Rechthoek(new Point(int.Parse(paras[1]), int.Parse(paras[2])), new Point(int.Parse(paras[3]), int.Parse(paras[4]))));//tekent volrechthoek uit lijst
+                }
+            }
         }
         public void Schoon()
         {
