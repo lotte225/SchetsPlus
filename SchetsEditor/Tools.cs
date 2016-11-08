@@ -104,7 +104,7 @@ namespace SchetsEditor
         }
     }
     
-    public class VolRechthoekTool : RechthoekTool
+    public class VolRechthoekTool : TweepuntTool
     {
         public override string ToString() { return "vlak"; }
         public override void MuisLos(SchetsControl s, Point p)
@@ -115,6 +115,11 @@ namespace SchetsEditor
         }
         public override void Compleet(Graphics g, Point p1, Point p2)
         {   g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
+        }
+
+        public override void Bezig(Graphics g, Point p1, Point p2)
+        {
+            g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
         }
     }
 
@@ -185,12 +190,61 @@ namespace SchetsEditor
         public override string ToString() { return "gum"; }
         public override void MuisLos(SchetsControl s, Point p)
         {
-            base.MuisLos(s, p);
-            s.geefLijst().Clear();
+            for (int i = s.geefLijst().Count - 1; i >= 0; i--)
+            {
+                string[] paras = s.geefLijst()[i].Split();//kijkt op positie i van lijst.
+                if (paras[0] == "Volrechthoek" || paras[0] == "kader")
+                {
+                    int x1 = int.Parse(paras[1]);
+                    int x2 = int.Parse(paras[3]);
+                    int y1 = int.Parse(paras[2]);
+                    int y2 = int.Parse(paras[4]);
+
+
+
+                    if (paras[0] == "Volrechthoek")
+                    {
+                        if (((x1 < p.X && x2 > p.X) || (x1 > p.X && x2 < p.X)) && ((y1 < p.Y && y2 > p.Y) || (y1 > p.Y && y2 < p.Y)))
+                        {
+                            s.geefLijst().RemoveAt(i);
+                            break;
+                        }
+                    }
+                    if (paras[0] == "lijn")
+                        for (int ongeveerX= p.X - 5; ongeveerX <= p.X + 5; ongeveerX++)
+                        {
+                            for (int ongeveerY = p.Y - 5; ongeveerY <= p.Y + 5; ongeveerY++)
+                            {
+                                {
+                                    if (((x1 <= ongeveerX && x2 >= ongeveerX) || (x1 >= ongeveerX && x2 >= ongeveerX)) && (ongeveerY == x1 + (x2 - x1) / (y2 - y1)) || ongeveerY == x2 + (x1 - x2) / (x1 - x2))
+                                    {
+                                        s.geefLijst().RemoveAt(i);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    if (paras[0] == "kader")
+                       {
+                       if (((((x1 - 5 <= p.X) && (x1 + 5 >= p.X))||((x2-5<=p.X) && (x2+5 >=p.X)))
+                            && ((y1<=p.Y &&y2>=p.Y)||(y1>=p.Y && y2 <= p.Y))))
+                       {
+                            s.geefLijst().RemoveAt(i);
+                            break;
+                       }
+                    }
+                    if (paras[0] == "Cirkel")
+                    {
+
+                    }
+
+                }
+                s.Invalidate();
+            }
         }
 
         public override void Bezig(Graphics g, Point p1, Point p2)
-        {   g.DrawLine(MaakPen(Brushes.White, 7), p1, p2);
+        {   //g.DrawLine(MaakPen(Brushes.White, 7), p1, p2);
         }
     }
 }

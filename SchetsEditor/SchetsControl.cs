@@ -58,6 +58,7 @@ namespace SchetsEditor
         public List<string> geefLijst()
         {
             return Schets.objectenLijst;
+            
         }
     }
 }
