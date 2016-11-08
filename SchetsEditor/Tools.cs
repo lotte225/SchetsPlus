@@ -183,6 +183,11 @@ namespace SchetsEditor
     public class GumTool : PenTool
     {
         public override string ToString() { return "gum"; }
+        public override void MuisLos(SchetsControl s, Point p)
+        {
+            base.MuisLos(s, p);
+            s.geefLijst().Clear();
+        }
 
         public override void Bezig(Graphics g, Point p1, Point p2)
         {   g.DrawLine(MaakPen(Brushes.White, 7), p1, p2);
