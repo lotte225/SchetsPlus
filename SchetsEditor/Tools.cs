@@ -46,7 +46,7 @@ namespace SchetsEditor
                 gr.MeasureString(tekst, font, this.startpunt, StringFormat.GenericTypographic);
                 gr.DrawString   (tekst, font, kwast, this.startpunt, StringFormat.GenericTypographic);
                 if (c == 32) sz.Width = 20; // zorgt dat de spatie getekend wordt!
-                else s.geefLijst().Add($"tekst {tekst} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B} {startpunt.X} {startpunt.Y}"); 
+                else s.geefLijst().Add($"tekst {tekst} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B} {startpunt.X} {startpunt.Y} {sz.Width} {sz.Height}"); 
                 //gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
                 startpunt.X += (int)sz.Width;
                 s.Invalidate();
@@ -292,6 +292,19 @@ namespace SchetsEditor
 
                     }
 
+                }
+                if (paras[0] == "tekst")
+                {
+
+                    float startpuntX = float.Parse(paras[5]);
+                    float startpuntY = float.Parse(paras[6]);
+                    float zWidth = float.Parse(paras[7]);
+                    float zHeigth = float.Parse(paras[8]);
+                    if ((p.X >= startpuntX && p.X <= startpuntX + zWidth) && (p.Y >= startpuntY && p.Y <= startpuntY + zHeigth))
+                    {
+                        s.geefLijst().RemoveAt(i);
+                        break;
+                    }
                 }
 
             }
