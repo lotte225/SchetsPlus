@@ -139,7 +139,7 @@ namespace SchetsEditor
             g.DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
     }
-    public class FillEllipseTool: EllipseTool // teken gevulde ovaal
+    public class FillEllipseTool: TweepuntTool // teken gevulde ovaal
     {
         public override string ToString() { return "cirkel"; }
         public override void MuisLos(SchetsControl s, Point p)
@@ -176,7 +176,7 @@ namespace SchetsEditor
         public override void MuisLos(SchetsControl s, Point p)
         {
             base.MuisLos(s, p);
-            s.geefLijst().Add($"pen {startpunt.X} {startpunt.Y} {p.X} {p.Y} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B}");//voegt lijn toe aan lijst
+            s.geefLijst().Add($"Pen {startpunt.X} {startpunt.Y} {p.X} {p.Y} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B}");//voegt lijn toe aan lijst
             s.Invalidate();
         }
 
@@ -194,7 +194,7 @@ namespace SchetsEditor
             for (int i = s.geefLijst().Count - 1; i >= 0; i--)
             {
                 string[] paras = s.geefLijst()[i].Split();//kijkt op positie i van lijst.
-                if (paras[0] == "Volrechthoek" || paras[0] == "Kader"|| paras[0] == "Lijn")
+                if (paras[0] == "Volrechthoek" || paras[0] == "Kader" || paras[0] == "Lijn" || paras[0] == "Pen"|| paras[0]=="Volcirkel"|| paras[0]== "Cirkel")
                 {
                     int x1 = int.Parse(paras[1]);
                     int x2 = int.Parse(paras[3]);
@@ -211,7 +211,7 @@ namespace SchetsEditor
                             break;
                         }
                     }
-                    if (paras[0] == "Lijn")
+                    if (paras[0] == "Lijn" || paras[0]=="Pen")//pen bestaat uit lijnen, dus dit kan gewoon
                     {
 
                         if (x1 == x2)
@@ -240,7 +240,7 @@ namespace SchetsEditor
                             float b2 = p.Y - (p.X * a2);
                             float x3 = (b2 - b) / (a - a2);
                             float y3 = a * x3 + b;
-                            float d = (float)Math.Sqrt((p.Y - y3) * (p.Y - y3) + (p.X - x3) * (p.X - x3));
+                            float d = (float)Math.Sqrt((p.Y - y3) * (p.Y - y3) + (p.X - x3) * (p.X - x3));//bepaalt afstand tot lijn
 
                             if (d <= 5)
                             {
@@ -250,7 +250,7 @@ namespace SchetsEditor
                         }
 
                     }
-                    if (paras[0] == "Kader")
+                    if (paras[0] == "Kader")//gummen van een kader, kliknauwkeurigheid 5px tot lijn
                     {
                         if( (   (x1 - 5 <= p.X && p.X <= x1 + 5 )       &&         ((y1 <= p.Y && p.Y <= y2) || (y1>= p.Y && p.Y >=y2)) )       ||
                             (   (x2 - 5 <= p.X && p.X <= x2 + 5 )       &&         ((y1 <= p.Y && p.Y <= y2) || (y1>= p.Y && p.Y >=y2)) )       ||
@@ -262,8 +262,33 @@ namespace SchetsEditor
                         }
                        
                     }
-                    if (paras[0] == "Cirkel")
+                    if (paras[0] == "Volcirkel"|| paras[0] == "Cirkel")
                     {
+                        float mx = (x1 + x2) / 2;
+                        float my = (y1 + y2) / 2;
+                        float a = Math.Abs((x2-x1)/2);
+                        float b = Math.Abs((y2-y1)/2) ;
+                        float x = Math.Abs(p.X - mx);
+                        float y = Math.Abs(p.Y - my);
+                        if (((x * x) / (a * a)) + ((y * y) / (b * b)) <= 1 && paras[0] == "Volcirkel")
+                        {
+                            s.geefLijst().RemoveAt(i);
+                            break;
+                        }
+                        if (paras[0] == "Cirkel")
+                        {
+                            //binnencirkel
+                            float a1 = a - 5;
+                            float b1 = b - 5;
+                            //buitencirkel
+                            float a2 = a + 5;
+                            float b2 = b + 5;
+                            if (((x * x) / (a1*a1)) + ((y * y) / (b1 * b1)) >= 1 && ((x * x) / (a2 * a2)) + ((y * y) / (b2 * b2)) <= 1)
+                            {
+                                s.geefLijst().RemoveAt(i);
+                                break;
+                            }
+                        }
 
                     }
 

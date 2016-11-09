@@ -197,6 +197,7 @@ namespace SchetsEditor
         {
             Bitmap loadedBitmap = schetscontrol.Schets.Bitmap;
             loadedBitmap.Save(FileName);
+           // Stack<string> objectenlijst = schetscontrol.Schets.objectenLijst.Add(i);
         }
         public void opslaan(object sender, EventArgs e)//save event
         {
@@ -208,7 +209,7 @@ namespace SchetsEditor
             {
                 this.Text = dialog.FileName;
                 this.WriteToFile(dialog.FileName);
-
+                
             }
         }
     }
