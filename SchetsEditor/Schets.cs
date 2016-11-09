@@ -19,9 +19,6 @@ namespace SchetsEditor
         {
             get
             {
-                //string woorden = "kader x y x y kleur"; uitleg ding
-                //string[] items = woorden.Split(' ');
-
                 return objectenLijst;
             }
         }
@@ -30,11 +27,11 @@ namespace SchetsEditor
         public Schets(Bitmap bitje)//zorgt ervoor dat de bitmap opgeslagen kan worden
         {
             bitmap = bitje;
-            objectenLijst = new List<string>();//iets met objecten
+            objectenLijst = new List<string>();
         }
         public Graphics BitmapGraphics
         {
-            get { return Graphics.FromImage(bitmap); }
+           get { return Graphics.FromImage(bitmap); }
         }
         public void VeranderAfmeting(Size sz)
         {
@@ -54,7 +51,7 @@ namespace SchetsEditor
             gr.Clear(Color.White);//witte achtergrond
             gr.DrawImage(bitmap, 0, 0);
             foreach(string s in objectenLijst)
-            {
+            {   //wat te tekenen bij welke button
                 string[] paras = s.Split();
                 if (paras[0] == "Volrechthoek")
                 {
@@ -83,24 +80,25 @@ namespace SchetsEditor
                 else if (paras[0] == "tekst")
                 {
                     gr.DrawString(paras[1], new Font("Tahoma", 40), new SolidBrush(Color.FromArgb(int.Parse(paras[2]),int.Parse(paras[3]), int.Parse(paras[4]))), int.Parse(paras[5]), int.Parse(paras[6]),StringFormat.GenericTypographic);
-                                       // gr.DrawString(tekst, font, kwast, this.startpunt, StringFormat.GenericTypographic);
 
                 }
             }
+
         }
+
         public void Schoon()
         {
-            objectenLijst.Clear();
+            objectenLijst.Clear();//wis alles
         }
         public void Roteer()
         {
-            // bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone)
-            objectenLijst.Reverse();
+            bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);//werkt enkel bij bitmap
+            
 
         }
         public void Wissel()
         {
-            objectenLijst.Reverse();
+            objectenLijst.Reverse();//breng achterste objecten naar voren, voorste objecten naar achter.
         }
     }
 }

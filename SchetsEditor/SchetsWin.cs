@@ -54,10 +54,9 @@ namespace SchetsEditor
                                     , new FillEllipseTool()
                                     };
             String[] deKleuren = { "Black", "Red", "Green", "Blue"
-                                 , "Yellow", "Magenta", "Cyan" , "Hotpink", "Purple"
-                                 };
-
-            this.ClientSize = new Size(700, 500);
+                                 , "Yellow", "Magenta", "Cyan" , "Hotpink", "Purple", "Lightpink", "Lightblue", "Gray", "Navy"
+                                 };//meer kleuren toegevoegd
+            this.ClientSize = new Size(1000, 600);//grotere client
             huidigeTool = deTools[0];
 
             schetscontrol = new SchetsControl();
@@ -80,7 +79,6 @@ namespace SchetsEditor
                                           
                                        };
             this.Controls.Add(schetscontrol);
-
             menuStrip = new MenuStrip();
             menuStrip.Visible = false;
             this.Controls.Add(menuStrip);
@@ -92,16 +90,14 @@ namespace SchetsEditor
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
         }
-
         private void maakFileMenu()
         {   
             ToolStripMenuItem menu = new ToolStripMenuItem("File");
             menu.MergeAction = MergeAction.MatchOnly;
             menu.DropDownItems.Add("Sluiten", null, this.afsluiten);
-            menu.DropDownItems.Add("Opslaan", null, opslaan);//creeërt opslaan button
+            menu.DropDownItems.Add("Opslaan", null, opslaan);//creeërt opslaan dropdown item
             menuStrip.Items.Add(menu);
         }
-
         private void maakToolMenu(ICollection<ISchetsTool> tools)
         {   
             ToolStripMenuItem menu = new ToolStripMenuItem("Tool");
@@ -115,19 +111,18 @@ namespace SchetsEditor
             }
             menuStrip.Items.Add(menu);
         }
-
         private void maakAktieMenu(String[] kleuren)
         {   
             ToolStripMenuItem menu = new ToolStripMenuItem("Aktie");
             menu.DropDownItems.Add("Clear", null, schetscontrol.Schoon );
             menu.DropDownItems.Add("Roteer", null, schetscontrol.Roteer );
+            menu.DropDownItems.Add("Reverse", null, schetscontrol.Wissel);
             ToolStripMenuItem submenu = new ToolStripMenuItem("Kies kleur");
             foreach (string k in kleuren)
                 submenu.DropDownItems.Add(k, null, schetscontrol.VeranderKleurViaMenu);
             menu.DropDownItems.Add(submenu);
             menuStrip.Items.Add(menu);
         }
-
         private void maakToolButtons(ICollection<ISchetsTool> tools)
         {
             int t = 0;
@@ -136,6 +131,7 @@ namespace SchetsEditor
                 RadioButton b = new RadioButton();
                 b.Appearance = Appearance.Button;
                 b.Size = new Size(45, 62);
+                b.BackColor = Color.White;
                 b.Location = new Point(10, 10 + t * 62);
                 b.Tag = tool;
                 b.Text = tool.ToString();
@@ -148,7 +144,6 @@ namespace SchetsEditor
                 t++;
             }
         }
-
         private void maakAktieButtons(String[] kleuren)
         {   
             paneel = new Panel();
@@ -188,71 +183,74 @@ namespace SchetsEditor
             cbb.SelectedIndex = 0;
             paneel.Controls.Add(cbb);
         }
-
         public void ReadFromFile(string FileName)//opent file
         {
             Bitmap loadedBitMap = new Bitmap(FileName);
             schetscontrol.Schets = new Schets(loadedBitMap);
-            //schetscontrol.Schets.VeranderAfmeting(loadedBitMap.Size);
-            //schetscontrol.Schets.BitmapGraphics.DrawImage(loadedBitMap, 0, 0);
             schetscontrol.Invalidate();
-
             this.Text = FileName;
-
         }
-        public void ReadFromSchetsFile(string FileName)
+        public void ReadFromSchetsFile(string FileName)//opent een schetsfile
         {
             schetscontrol.Schets = new Schets();
             StreamReader r = new StreamReader(FileName);
             string e;
-            // e = r.ReadLine();
             while ((e = r.ReadLine()) != null)
             {
-                schetscontrol.Schets.objectenLijst.Add(e);
+                schetscontrol.Schets.objectenLijst.Add(e);//voegt strings toe aan objectenlijst, die vervolgens weer ingelezen kan worden door het programma
 
             }
             r.Close();
             this.Text = FileName;
             schetscontrol.Invalidate();
-
         }
-        
         public void WriteToFile(string FileName)//slaat file op
         {
-            Bitmap loadedBitmap = new Bitmap(schetscontrol.Schets.Bitmap);
+            Bitmap loadedBitmap = new Bitmap(schetscontrol.Schets.Bitmap);// sla bitmap op
             loadedBitmap.Save(FileName);
 
         }
-        public void WriteToSchetsFile(string FileName)
+        public void WriteToSchetsFile(string FileName)//sla op als schetsfile
         {
             StreamWriter w = new StreamWriter(FileName);
             foreach (string s in schetscontrol.Schets.objectenLijst)
             {
-                w.WriteLine(s);
-
+                w.WriteLine(s);//slaat de tekst in de objectenlijst op
             }
             w.Close();
-
         }
-        public void opslaan(object sender, EventArgs e)//save event
+        public void opslaan(object sender, EventArgs e)//slaat ieder file op
         {
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter= "Plaatjes | *.PNG |Bitmaps | *.BMP |Fotobestanden | *.JPG |Schetsfiles|*.le";
             dialog.Title = "Save File";
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                if (dialog.FileName.EndsWith(".le"))
+                if (dialog.FileName.EndsWith(".le"))//indien schetsfile
                 {
                     this.Text = dialog.FileName;
                     this.WriteToSchetsFile(dialog.FileName);
                 }
-                else
+                else//indien geen schetsfile
                 {
                     this.Text = dialog.FileName;
                     this.WriteToFile(dialog.FileName);
 
                 }
             }
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // SchetsWin
+            // 
+            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.ClientSize = new System.Drawing.Size(282, 253);
+            this.Name = "SchetsWin";
+            this.ResumeLayout(false);
+
         }
     }
 }

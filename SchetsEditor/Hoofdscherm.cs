@@ -9,12 +9,12 @@ namespace SchetsEditor
         MenuStrip menuStrip;
 
         public Hoofdscherm()
-        {   this.ClientSize = new Size(800, 600);
+        {   this.ClientSize = new Size(1200, 800);//grotere client zodat alle knoppen zichtbaar zijn
             menuStrip = new MenuStrip();
             this.Controls.Add(menuStrip);
             this.maakFileMenu();
             this.maakHelpMenu();
-            this.Text = "Schets editor";
+            this.Text = "Schets Plus";
             this.IsMdiContainer = true;
             this.MainMenuStrip = menuStrip;
         }
@@ -33,7 +33,7 @@ namespace SchetsEditor
             menuStrip.Items.Add(menu);
         }
         private void about(object o, EventArgs ea)
-        {   MessageBox.Show("Schets versie 1.0\n(c) UU Informatica 2010"
+        {   MessageBox.Show("SchetsPlus versie 2.0\n(c) UU Informatica 2010- Edit door Lotte van Horssen en Esmee Dekker, 2016"
                            , "Over \"Schets\""
                            , MessageBoxButtons.OK
                            , MessageBoxIcon.Information
@@ -44,6 +44,7 @@ namespace SchetsEditor
         {   SchetsWin s = new SchetsWin();
             s.MdiParent = this;
             s.Show();
+            s.BackColor = Color.WhiteSmoke;
         }
         private void afsluiten(object sender, EventArgs e)
         {   this.Close();
@@ -52,11 +53,11 @@ namespace SchetsEditor
         private void open(object sender, EventArgs e)//open event
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Plaatjes|*.PNG|Bitmaps|*.BMP|Fotobestanden|*.JPG|Schetsfiles|*.le";
+            dialog.Filter = "Plaatjes|*.PNG|Bitmaps|*.BMP|Fotobestanden|*.JPG|Schetsfiles|*.le";//type files
             dialog.Title = "Open file";
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                if (dialog.FileName.EndsWith(".le"))
+                if (dialog.FileName.EndsWith(".le"))//indien schetsfile
                 {
                     SchetsWin s = new SchetsWin();
                     s.MdiParent = this;
@@ -65,7 +66,7 @@ namespace SchetsEditor
                 }
                 else
                 {
-                    SchetsWin s = new SchetsWin();
+                    SchetsWin s = new SchetsWin();//"normale" afbeeldingen
                     s.MdiParent = this;
                     s.ReadFromFile(dialog.FileName);
                     s.Show();

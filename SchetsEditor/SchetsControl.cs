@@ -24,9 +24,6 @@ namespace SchetsEditor
             this.veranderAfmeting(null, null);
             this.DoubleBuffered = true;//voorkomt knipperen van scherm
         }
-        protected override void OnPaintBackground(PaintEventArgs e)
-        {
-        }
         private void teken(object o, PaintEventArgs pea)
         {   schets.Teken(pea.Graphics);
         }
