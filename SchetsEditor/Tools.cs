@@ -242,7 +242,7 @@ namespace SchetsEditor
                             float y3 = a * x3 + b;
                             float d = (float)Math.Sqrt((p.Y - y3) * (p.Y - y3) + (p.X - x3) * (p.X - x3));//bepaalt afstand tot lijn
 
-                            if (d <= 5)
+                            if (d <= 5 && ((x3 >= x1 &&x3 <=x2 )|| (x3>=x2 && x3 <= x1)))
                             {
                                 s.geefLijst().RemoveAt(i);
                                 break;

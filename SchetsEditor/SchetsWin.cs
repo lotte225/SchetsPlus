@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Resources;
+using System.IO;
 
 namespace SchetsEditor
 {
@@ -185,11 +186,27 @@ namespace SchetsEditor
         public void ReadFromFile(string FileName)//opent file
         {
             Bitmap loadedBitMap = new Bitmap(FileName);
-
             schetscontrol.Schets = new Schets();
             schetscontrol.Schets.VeranderAfmeting(loadedBitMap.Size);
             schetscontrol.Schets.BitmapGraphics.DrawImage(loadedBitMap, 0, 0);
+
             this.Text = FileName;
+
+        }
+        public void ReadFromSchetsFile(string FileName)
+        {
+            schetscontrol.Schets = new Schets();
+            StreamReader r = new StreamReader(FileName);
+            string e;
+            // e = r.ReadLine();
+            while ((e = r.ReadLine()) != null)
+            {
+                schetscontrol.Schets.objectenLijst.Add(e);
+
+            }
+            r.Close();
+            this.Text = FileName;
+            schetscontrol.Invalidate();
 
         }
         
@@ -197,19 +214,37 @@ namespace SchetsEditor
         {
             Bitmap loadedBitmap = schetscontrol.Schets.Bitmap;
             loadedBitmap.Save(FileName);
-           // Stack<string> objectenlijst = schetscontrol.Schets.objectenLijst.Add(i);
+
+        }
+        public void WriteToSchetsFile(string FileName)
+        {
+            StreamWriter w = new StreamWriter(FileName);
+            foreach (string s in schetscontrol.Schets.objectenLijst)
+            {
+                w.WriteLine(s);
+
+            }
+            w.Close();
+
         }
         public void opslaan(object sender, EventArgs e)//save event
         {
             SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "Schetsfiles | *.PNG | Bitmaps | *.BMP | Fotobestanden | *.JPG";
+            dialog.Filter= "Plaatjes | *.PNG |Bitmaps | *.BMP |Fotobestanden | *.JPG |Schetsfiles|*.le";
             dialog.Title = "Save File";
-
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                this.Text = dialog.FileName;
-                this.WriteToFile(dialog.FileName);
-                
+                if (dialog.FileName.EndsWith(".le"))
+                {
+                    this.Text = dialog.FileName;
+                    this.WriteToSchetsFile(dialog.FileName);
+                }
+                else
+                {
+                    this.Text = dialog.FileName;
+                    this.WriteToFile(dialog.FileName);
+
+                }
             }
         }
     }

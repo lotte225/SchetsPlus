@@ -52,15 +52,24 @@ namespace SchetsEditor
         private void open(object sender, EventArgs e)//open event
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Schetsfiles|*.PNG|Bitmaps|*.BMP|Fotobestanden|*.JPG";
+            dialog.Filter = "Plaatjes|*.PNG|Bitmaps|*.BMP|Fotobestanden|*.JPG |Schetsfiles|*.le";
             dialog.Title = "Open file";
-
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                SchetsWin s = new SchetsWin();
-                s.MdiParent = this;
-                s.ReadFromFile(dialog.FileName);
-                s.Show();
+                if (dialog.FileName.EndsWith(".le"))
+                {
+                    SchetsWin s = new SchetsWin();
+                    s.MdiParent = this;
+                    s.ReadFromSchetsFile(dialog.FileName);
+                    s.Show();
+                }
+                else
+                {
+                    SchetsWin s = new SchetsWin();
+                    s.MdiParent = this;
+                    s.ReadFromFile(dialog.FileName);
+                    s.Show();
+                }
             }
 
         }
