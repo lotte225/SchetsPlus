@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Forms;
 
 namespace SchetsEditor
 {
@@ -193,7 +194,7 @@ namespace SchetsEditor
             for (int i = s.geefLijst().Count - 1; i >= 0; i--)
             {
                 string[] paras = s.geefLijst()[i].Split();//kijkt op positie i van lijst.
-                if (paras[0] == "Volrechthoek" || paras[0] == "kader")
+                if (paras[0] == "Volrechthoek" || paras[0] == "Kader"|| paras[0] == "Lijn")
                 {
                     int x1 = int.Parse(paras[1]);
                     int x2 = int.Parse(paras[3]);
@@ -210,28 +211,56 @@ namespace SchetsEditor
                             break;
                         }
                     }
-                    if (paras[0] == "lijn")
-                        for (int ongeveerX= p.X - 5; ongeveerX <= p.X + 5; ongeveerX++)
+                    if (paras[0] == "Lijn")
+                    {
+
+                        if (x1 == x2)
                         {
-                            for (int ongeveerY = p.Y - 5; ongeveerY <= p.Y + 5; ongeveerY++)
+                            float dx = p.X - x1;
+                            if (Math.Abs(dx) <= 5)
                             {
-                                {
-                                    if (((x1 <= ongeveerX && x2 >= ongeveerX) || (x1 >= ongeveerX && x2 >= ongeveerX)) && (ongeveerY == x1 + (x2 - x1) / (y2 - y1)) || ongeveerY == x2 + (x1 - x2) / (x1 - x2))
-                                    {
-                                        s.geefLijst().RemoveAt(i);
-                                        break;
-                                    }
-                                }
+                                s.geefLijst().RemoveAt(i);
+                                break;
                             }
                         }
-                    if (paras[0] == "kader")
-                       {
-                       if (((((x1 - 5 <= p.X) && (x1 + 5 >= p.X))||((x2-5<=p.X) && (x2+5 >=p.X)))
-                            && ((y1<=p.Y &&y2>=p.Y)||(y1>=p.Y && y2 <= p.Y))))
-                       {
+                        else if (y1 == y2)
+                        {
+                            float dy = p.Y - y1;
+                            if (Math.Abs(dy) <= 5)
+                            {
+                                s.geefLijst().RemoveAt(i);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            float a = (float)(y2 - y1) / (x2 - x1);
+                            float a2 = -1 / a;
+                            float b = y1 - (x1 * a);
+                            float b2 = p.Y - (p.X * a2);
+                            float x3 = (b2 - b) / (a - a2);
+                            float y3 = a * x3 + b;
+                            float d = (float)Math.Sqrt((p.Y - y3) * (p.Y - y3) + (p.X - x3) * (p.X - x3));
+
+                            if (d <= 5)
+                            {
+                                s.geefLijst().RemoveAt(i);
+                                break;
+                            }
+                        }
+
+                    }
+                    if (paras[0] == "Kader")
+                    {
+                        if( (   (x1 - 5 <= p.X && p.X <= x1 + 5 )       &&         ((y1 <= p.Y && p.Y <= y2) || (y1>= p.Y && p.Y >=y2)) )       ||
+                            (   (x2 - 5 <= p.X && p.X <= x2 + 5 )       &&         ((y1 <= p.Y && p.Y <= y2) || (y1>= p.Y && p.Y >=y2)) )       ||
+                            (   (y1 - 5 <= p.Y && p.Y <= y1 + 5 )       &&         ((x1 <= p.X && p.X <= x2) || (x1>= p.X && p.X >=x2)) )       ||
+                            (   (y2 - 5 <= p.Y && p.Y <= y2 + 5 )       &&         ((x1 <= p.X && p.X <= x2) || (x1>= p.X && p.X >=x2)) )       )
+                        {
                             s.geefLijst().RemoveAt(i);
                             break;
-                       }
+                        }
+                       
                     }
                     if (paras[0] == "Cirkel")
                     {
@@ -239,8 +268,9 @@ namespace SchetsEditor
                     }
 
                 }
-                s.Invalidate();
+
             }
+            s.Invalidate();
         }
 
         public override void Bezig(Graphics g, Point p1, Point p2)
