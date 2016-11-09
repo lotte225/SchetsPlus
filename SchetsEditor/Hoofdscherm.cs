@@ -52,7 +52,7 @@ namespace SchetsEditor
         private void open(object sender, EventArgs e)//open event
         {
             OpenFileDialog dialog = new OpenFileDialog();
-            dialog.Filter = "Plaatjes|*.PNG|Bitmaps|*.BMP|Fotobestanden|*.JPG |Schetsfiles|*.le";
+            dialog.Filter = "Plaatjes|*.PNG|Bitmaps|*.BMP|Fotobestanden|*.JPG|Schetsfiles|*.le";
             dialog.Title = "Open file";
             if (dialog.ShowDialog() == DialogResult.OK)
             {

@@ -167,6 +167,12 @@ namespace SchetsEditor
             b.Location = new Point( 80, 0); 
             b.Click += schetscontrol.Roteer; 
             paneel.Controls.Add(b);
+
+            b = new Button();
+            b.Text = "Reverse";
+            b.Location = new Point(160, 0);
+            b.Click += schetscontrol.Wissel;
+            paneel.Controls.Add(b);
             
             l = new Label();  
             l.Text = "Penkleur:"; 
@@ -186,9 +192,10 @@ namespace SchetsEditor
         public void ReadFromFile(string FileName)//opent file
         {
             Bitmap loadedBitMap = new Bitmap(FileName);
-            schetscontrol.Schets = new Schets();
-            schetscontrol.Schets.VeranderAfmeting(loadedBitMap.Size);
-            schetscontrol.Schets.BitmapGraphics.DrawImage(loadedBitMap, 0, 0);
+            schetscontrol.Schets = new Schets(loadedBitMap);
+            //schetscontrol.Schets.VeranderAfmeting(loadedBitMap.Size);
+            //schetscontrol.Schets.BitmapGraphics.DrawImage(loadedBitMap, 0, 0);
+            schetscontrol.Invalidate();
 
             this.Text = FileName;
 
@@ -212,7 +219,7 @@ namespace SchetsEditor
         
         public void WriteToFile(string FileName)//slaat file op
         {
-            Bitmap loadedBitmap = schetscontrol.Schets.Bitmap;
+            Bitmap loadedBitmap = new Bitmap(schetscontrol.Schets.Bitmap);
             loadedBitmap.Save(FileName);
 
         }

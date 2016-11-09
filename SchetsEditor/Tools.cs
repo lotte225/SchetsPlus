@@ -44,7 +44,7 @@ namespace SchetsEditor
                 string tekst = c.ToString();
                 SizeF sz = 
                 gr.MeasureString(tekst, font, this.startpunt, StringFormat.GenericTypographic);
-                gr.DrawString   (tekst, font, kwast, this.startpunt, StringFormat.GenericTypographic);
+                //gr.DrawString   (tekst, font, kwast, this.startpunt, StringFormat.GenericTypographic);
                 if (c == 32) sz.Width = 20; // zorgt dat de spatie getekend wordt!
                 else s.geefLijst().Add($"tekst {tekst} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B} {startpunt.X} {startpunt.Y} {sz.Width} {sz.Height}"); 
                 //gr.DrawRectangle(Pens.Black, startpunt.X, startpunt.Y, sz.Width, sz.Height);
@@ -77,16 +77,11 @@ namespace SchetsEditor
         }
         public override void MuisLos(SchetsControl s, Point p)
         {   base.MuisLos(s, p);
-            this.Compleet(s.MaakBitmapGraphics(), this.startpunt, p);
         }
         public override void Letter(SchetsControl s, char c)
         {
         }
         public abstract void Bezig(Graphics g, Point p1, Point p2);
-        
-        public virtual void Compleet(Graphics g, Point p1, Point p2)
-        {   this.Bezig(g, p1, p2);
-        }
     }
 
     public class RechthoekTool : TweepuntTool
@@ -114,9 +109,9 @@ namespace SchetsEditor
             s.geefLijst().Add($"Volrechthoek {startpunt.X} {startpunt.Y} {p.X} {p.Y} {kwast.Color.R} {kwast.Color.G} {kwast.Color.B}");//voegt volrechthoek toe aan lijst
             s.Invalidate();
         }
-        public override void Compleet(Graphics g, Point p1, Point p2)
-        {   g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
-        }
+       /* public override void Compleet(Graphics g, Point p1, Point p2)
+        {   //g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
+        }*/
 
         public override void Bezig(Graphics g, Point p1, Point p2)
         {

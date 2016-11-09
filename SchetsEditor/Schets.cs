@@ -25,15 +25,12 @@ namespace SchetsEditor
                 return objectenLijst;
             }
         }
-        
-        public Schets()
-        {
-            bitmap = new Bitmap(1, 1);
-            objectenLijst = new List<string>();//iets met objecten
-        }
+
+        public Schets() : this(new Bitmap(1, 1)) { }
         public Schets(Bitmap bitje)//zorgt ervoor dat de bitmap opgeslagen kan worden
         {
             bitmap = bitje;
+            objectenLijst = new List<string>();//iets met objecten
         }
         public Graphics BitmapGraphics
         {
@@ -54,8 +51,8 @@ namespace SchetsEditor
         }
         public void Teken(Graphics gr)
         {
-            // gr.DrawImage(bitmap, 0, 0);
             gr.Clear(Color.White);//witte achtergrond
+            gr.DrawImage(bitmap, 0, 0);
             foreach(string s in objectenLijst)
             {
                 string[] paras = s.Split();
@@ -93,12 +90,17 @@ namespace SchetsEditor
         }
         public void Schoon()
         {
-            Graphics gr = Graphics.FromImage(bitmap);
-            gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
+            objectenLijst.Clear();
         }
         public void Roteer()
         {
-            bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            // bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone)
+            objectenLijst.Reverse();
+
+        }
+        public void Wissel()
+        {
+            objectenLijst.Reverse();
         }
     }
 }
